@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "types": ["vite/client", "node"],
+    "baseUrl": ".",              // required for "paths" to work
+    "paths": {
+      "@/*": ["src/*"]           // map "@/foo" → "src/foo"
+    },
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    "jsx": "react-jsx",            // use the automatic import JSX transform
+    "jsxImportSource": "react",     // (optional; defaults to "react")
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["vite.config.ts"]
+}

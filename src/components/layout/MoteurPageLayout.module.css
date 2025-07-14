@@ -1,0 +1,31 @@
+/* src/components/layout/MoteurPageLayout.module.css */
+
+.page {
+  min-height: calc(100vh - 10px);
+}
+
+.inner {
+  margin-left: 10px;
+  min-height: calc(100vh - 64px);
+  min-width: calc(100vw - 270px);
+}
+
+.header {
+  min-height: 64px;
+  background: #f0f2f5;
+  min-width: calc(100% - 250px);
+}
+
+.body {
+  padding: 1rem 1rem 1rem 0;
+  min-width: calc(100% - 250px);
+  min-height: calc(100vh - 64px);
+  vertical-align: top;
+}
+
+.container {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  color: #333;
+}

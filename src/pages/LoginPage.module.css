@@ -1,0 +1,97 @@
+/* LoginPage.module.css */
+
+.loginPage {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  background-color: var(--poster-bg, #000); /* <-- controlled from JS */
+  transition: background-color 1s ease;
+}
+
+.loginWrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.poster {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.posterImage {
+  aspect-ratio: 2 / 3;
+  display: block;
+  width: auto;
+  height: 100%;
+  max-height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 2rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 1s ease;
+  transition: transform 10s ease;
+}
+
+.posterImage:hover {
+  transform: scale(1.05);
+}
+
+.posterImage[aria-hidden="true"] {
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.formPanel {
+  flex: 1;
+  max-width: 480px;
+  margin: auto;
+  padding: 2rem 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  max-width: 120px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .loginWrapper {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .formPanel {
+    max-width: 90vw;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .posterImage {
+    max-width: 90vw;
+    height: auto;
+    border-radius: 1.25rem;
+  }
+}

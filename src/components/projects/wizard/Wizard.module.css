@@ -1,0 +1,13 @@
+/* src/components/projects/wizard/Wizard.module.css */
+
+.card {
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 16px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,39 @@
+
+
+.card {
+  width: 100%;
+  max-width: 320px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.coverImage {
+  height: 160px;
+  object-fit: cover;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+}
+
+.header {
+  padding-top: 8px;
+}
+
+.iconWrapper {
+  margin-bottom: 4px;
+  color: var(--ant-primary-color);
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.description {
+  display: block;
+  margin-top: 4px;
+}
+
+.stats {
+  margin-top: 12px;
+}

@@ -1,0 +1,13 @@
+/* src/components/project/LayoutsSection.module.css */
+.section {
+  margin-bottom: 24px;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.item:focus {
+  outline: 2px solid var(--ant-primary-color);
+  outline-offset: 2px;
+}

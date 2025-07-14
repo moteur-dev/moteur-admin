@@ -1,0 +1,39 @@
+/* src/components/layout/sidebar/Sidebar.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; /* hide overall overflow */
+  background-color: var(--ant-layout-sider-background);
+}
+
+/* This area scrolls if it overflows */
+.content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.logoSection {
+  text-align: center;
+  padding: 0 16px;
+}
+
+.menuSection,
+.systemSection {
+  padding: 0 16px;
+}
+
+.divider {
+  margin: 8px 0;
+}
+
+/* This sticks to the bottom of the sidebar */
+.bottomSection {
+  flex: 0 0 auto;
+  position: sticky;
+  bottom: 0;
+  background: var(--ant-layout-sider-background);
+  padding: 16px;
+  border-top: 1px solid #f0f0f0;
+}

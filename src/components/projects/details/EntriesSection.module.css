@@ -1,0 +1,13 @@
+/* src/components/project/EntriesSection.module.css */
+.section {
+  margin-bottom: 24px;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.item:focus {
+  outline: 2px solid var(--ant-primary-color);
+  outline-offset: 2px;
+}

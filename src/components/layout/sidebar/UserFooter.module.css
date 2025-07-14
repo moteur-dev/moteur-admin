@@ -1,0 +1,32 @@
+/* src/components/layout/sidebar/UserFooter.module.css */
+.footer {
+  position: sticky;     /* stick to bottom of sidebar container */
+  bottom: 0;
+  padding: 16px;
+  border-top: 1px solid #f0f0f0;
+  background: var(--ant-layout-sider-background); /* match sidebar bg */
+  z-index: 1;           /* above any scrolling content */
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.userInfo:focus {
+  outline: 2px solid var(--ant-primary-color);
+  outline-offset: 2px;
+}
+
+/* Ensure username is visible against white bg */
+.userName {
+  margin-left: 8px;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* Optional: tighten the dropdown so it doesn’t stretch full width */
+.dropdownOverlay.ant-dropdown {
+  min-width: 160px;
+}

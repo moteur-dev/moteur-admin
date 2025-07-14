@@ -1,0 +1,13 @@
+/* src/components/project/UsersSection.module.css */
+.section {
+  margin-bottom: 24px;
+}
+
+.item {
+  padding: 8px 0;
+}
+
+/* Ensure the badge shows up at the bottom-right of avatar */
+.ant-badge-dot {
+  background-color: #52c41a; /* AntD success green */
+}

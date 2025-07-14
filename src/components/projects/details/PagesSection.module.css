@@ -1,0 +1,24 @@
+/* src/components/project/PagesSection.module.css */
+.section {
+  margin-bottom: 24px;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.item:focus {
+  outline: 2px solid var(--ant-primary-color);
+  outline-offset: 2px;
+}
+
+.template {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.tag {
+  font-size: 0.85rem;
+  margin-left: 4px;
+  color: var(--ant-primary-color);
+}
