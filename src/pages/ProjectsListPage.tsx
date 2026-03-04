@@ -91,7 +91,7 @@ export function GenerateImageWidget() {
 
 export function ProjectsListPage() {
   const navigate = useNavigate()
-  const { data, loading, error } = useProjects({
+  const { data, loading, error, refetch } = useProjects({
     retries: 2,
     retryDelayMs: 1000,
   })
@@ -110,7 +110,15 @@ export function ProjectsListPage() {
 
   const handleSelect = (id: string) => navigate(`/projects/${id}`)
   const openWizard = () => setWizardVisible(true)
-  const closeWizard = () => setWizardVisible(false)
+  const closeWizard = () => {
+    setWizardVisible(false)
+    refetch()
+  }
+  const handleProjectCreated = (projectId: string) => {
+    setWizardVisible(false)
+    refetch()
+    navigate(`/projects/${projectId}`)
+  }
 
   return (
     <div className={styles.container}>
@@ -136,9 +144,7 @@ export function ProjectsListPage() {
           ))}
         </Row>
       )}
-      {!loading && filtered.length === 0 && <Empty description="No projects found" />}
-
-      {!loading && filtered.length > 0 && (
+      {!loading && (
         <Row gutter={[16, 16]} justify="center">
           <Col key="create">
             <NewProjectCard
@@ -158,11 +164,15 @@ export function ProjectsListPage() {
           ))}
         </Row>
       )}
+      {!loading && filtered.length === 0 && (
+        <Empty description="No projects yet. Create one using the card above." style={{ marginTop: 16 }} />
+      )}
       </div>
 
       <CreateProjectWizard
         visible={wizardVisible}
         onClose={closeWizard}
+        onProjectCreated={handleProjectCreated}
       />
     </div>
   )

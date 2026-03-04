@@ -9,6 +9,7 @@ const { Step } = Steps;
 export interface CreateProjectWizardProps {
   visible: boolean;
   onClose: () => void;
+  onProjectCreated?: (projectId: string, label: string) => void;
   width?: number;
   title?: string;
   'data-testid'?: string;
@@ -22,6 +23,7 @@ interface WizardStep {
 export function CreateProjectWizard({
   visible,
   onClose,
+  onProjectCreated,
   title = 'Create New Project',
   width = 600,
   'data-testid': testId,
@@ -39,7 +41,13 @@ export function CreateProjectWizard({
     },
     {
       title: 'Validate',
-      content: <EmptyStep onBack={() => setCurrent(1)} onFinish={onClose} />,
+      content: (
+        <EmptyStep
+          onBack={() => setCurrent(1)}
+          onFinish={onClose}
+          onProjectCreated={onProjectCreated}
+        />
+      ),
     },
   ];
 

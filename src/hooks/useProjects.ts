@@ -1,5 +1,5 @@
 // src/hooks/useProjects.ts
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { api } from '@/utils/apiClient';
 import type { ProjectSchema } from '@/types/Project';
 
@@ -20,37 +20,37 @@ export function useProjects(options: UseProjectsOptions = {}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
+  const fetchProjects = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     let attempt = 0;
 
-    const fetchProjects = async () => {
+    const run = async (): Promise<void> => {
       try {
-        const res = await api.get<{projects: ProjectSchema[]}>('/projects');
-        if (!cancelled) {
-          setData(res.data.projects);
-          setLoading(false);
-        }
+        const res = await api.get<{ projects: ProjectSchema[] }>('/projects');
+        setData(res.data.projects);
+        return;
       } catch (err: any) {
         attempt++;
-        if (attempt <= retries && !cancelled) {
+        if (attempt <= retries) {
           const delay = exponentialBackoff
             ? retryDelayMs * Math.pow(2, attempt)
             : retryDelayMs;
-
-          setTimeout(fetchProjects, delay);
-        } else if (!cancelled) {
-          setError(err.message ?? 'Unknown error');
-          setLoading(false);
+          await new Promise(r => setTimeout(r, delay));
+          return run();
         }
+        setError(err.message ?? 'Unknown error');
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchProjects();
-    return () => {
-      cancelled = true;
-    };
+    return run();
   }, [retries, retryDelayMs, exponentialBackoff]);
 
-  return { data, loading, error };
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
+  return { data, loading, error, refetch: fetchProjects };
 }
