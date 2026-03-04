@@ -1,5 +1,4 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import rawPlugin from 'vite-plugin-raw';
 
 const config: StorybookConfig = {
   framework: {
