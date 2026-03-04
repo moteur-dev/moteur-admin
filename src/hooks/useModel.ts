@@ -1,18 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/utils/apiClient';
-
-export interface ModelField {
-  name: string;
-  type: string;
-  label: string;
-  required?: boolean;
-}
-
-export interface ModelSchema {
-  id: string;
-  label: string;
-  fields: Record<string, ModelField> | ModelField[];
-}
+import type { ModelSchema } from '@/types/Model';
 
 export function useModel(projectId: string | undefined, modelId: string | undefined) {
   const [data, setData] = useState<ModelSchema | null>(null);

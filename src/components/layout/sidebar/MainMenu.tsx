@@ -1,12 +1,7 @@
 // src/components/layout/sidebar/MainMenu.tsx
 import { Menu } from 'antd';
 import { useLocation, Link } from 'react-router-dom';
-import {
-  FiFileText,
-  FiDatabase,
-  FiLayout,
-  FiLayers,
-} from 'react-icons/fi';
+import { FiFileText, FiDatabase } from 'react-icons/fi';
 
 import { useCurrentProject } from '@/hooks/useCurrentProject';
 import { useModels } from '@/hooks/useModels';
@@ -50,16 +45,6 @@ export function MainMenu() {
       icon: <FiDatabase />,
       label: <Link to={`/projects/${projectId}/models`}>Entries</Link>,
       children: modelSubItems,
-    },
-    {
-      key: `/projects/${projectId}/layouts`,
-      icon: <FiLayout />,
-      label: <Link to={`/projects/${projectId}/layouts`}>Layouts</Link>,
-    },
-    {
-      key: `/projects/${projectId}/structures`,
-      icon: <FiLayers />,
-      label: <Link to={`/projects/${projectId}/structures`}>Structures</Link>,
     },
   ];
 

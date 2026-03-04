@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
+import { message } from 'antd';
 import { getToken, setToken, removeToken } from '@/utils/token';
 import { api } from '@/utils/apiClient';
 import type { User } from '@/types/User';
 import { AuthContext } from '@/providers/AuthContext';
-
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -23,6 +23,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         removeToken();
         setTokenState(null);
         setUser(null);
+        message.error('Session expired. Please sign in again.');
       })
       .finally(() => setLoading(false));
   }, []);

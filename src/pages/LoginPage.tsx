@@ -1,18 +1,16 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Button, Input, Form, Divider } from 'antd';
+import { Button, Input, Form, Divider, message } from 'antd';
 import { GithubOutlined, GoogleOutlined } from '@ant-design/icons';
-import { api } from '../utils/apiClient';
-import { useAuth } from '../hooks/useAuth';
+import { api } from '@/utils/apiClient';
+import { config } from '@/utils/config';
+import { useAuth } from '@/hooks/useAuth';
 import styles from './LoginPage.module.css';
-
 
 const loginPosters = [
     { src: '/login/poster01.png', bg: '#1e6847' },
-    //{ src: '/login/poster02.png', bg: '#598b7e'},
-    //{ src: '/login/poster03.png', bg: '#53a243'},
-    //{ src: '/login/poster04.png', bg: '#10273d'},p
+    // { src: '/login/poster02.png', bg: '#598b7e' },
+    // { src: '/login/poster04.png', bg: '#10273d' },
     //{ src: '/login/poster05.png', bg: '#f0c78a'},
     { src: '/login/poster06.png', bg: '#3a8a5c'},
     { src: '/login/poster07.png', bg: '#e24033'},
@@ -71,15 +69,18 @@ export function LoginPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const onFinish = useCallback(async (values: any) => {
+  /** Payload matches backend POST /auth/login: { username, password } */
+  const onFinish = useCallback(async (values: { username?: string; password?: string }) => {
     try {
-      const res = await api.post('/auth/login', values);
+      const payload = { username: values.username ?? '', password: values.password ?? '' };
+      const res = await api.post('/auth/login', payload);
       const { token, user } = res.data;
       login(token, user);
-      navigate((location.state as any)?.from || '/projects');
+      navigate((location.state as { from?: string })?.from ?? '/projects');
     } catch {
+      message.error('Invalid credentials. Please try again.');
       form.setFields([
-        { name: 'email', errors: ['Invalid credentials'] },
+        { name: 'username', errors: ['Invalid credentials'] },
         { name: 'password', errors: [' '] },
       ]);
     }
@@ -87,7 +88,8 @@ export function LoginPage() {
 
   const redirectOAuth = useCallback((provider: string) => {
     const next = encodeURIComponent(location.pathname);
-    window.location.href = `/api/auth/${provider}?next=${next}`;
+    const base = config.oauthBaseUrl.replace(/\/$/, '');
+    window.location.href = `${base}/api/auth/${provider}?next=${next}`;
   }, [location.pathname]);
 
   const currentPoster = loginPosters[index];

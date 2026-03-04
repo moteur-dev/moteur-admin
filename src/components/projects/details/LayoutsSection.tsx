@@ -1,17 +1,12 @@
-// src/components/project/LayoutsSection.tsx
-import { type KeyboardEvent } from 'react'
-import { Skeleton, Alert, Empty, List, Typography } from 'antd'
-import styles from './LayoutsSection.module.css'
+import { type KeyboardEvent } from 'react';
+import { Skeleton, Alert, Empty, List, Typography } from 'antd';
+import type { LayoutItem } from '@/types/Project';
+import styles from './LayoutsSection.module.css';
 
-const { Title } = Typography
-
-export interface LayoutItem {
-  id: string
-  name: string
-}
+const { Title } = Typography;
 
 export interface LayoutsSectionProps {
-  layouts: LayoutItem[]
+  layouts: LayoutItem[];
   loading: boolean
   error?: string
   onSelectLayout: (id: string) => void

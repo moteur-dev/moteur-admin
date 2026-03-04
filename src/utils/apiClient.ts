@@ -1,9 +1,9 @@
-
 import axios from 'axios';
 import { getToken, removeToken } from './token';
+import { config } from './config';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: config.apiBaseUrl,
 });
 
 api.interceptors.request.use((config) => {

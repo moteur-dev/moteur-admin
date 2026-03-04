@@ -35,9 +35,11 @@ export function EntriesListPage() {
   }, [model, setModel]);
 
   const table = useMemo(() => {
-    if (!model) return undefined;
-    return generateTableOptions(model, (id) => navigate(`/entries/${id}/edit`));
-  }, [model, navigate]);
+    if (!model || !projectId || !modelId) return undefined;
+    return generateTableOptions(model, (id) =>
+      navigate(`/projects/${projectId}/models/${modelId}/entries/${id}`)
+    );
+  }, [model, projectId, modelId, navigate]);
 
   // ⛔️ Defer layout rendering until model is ready
   if (!model || loading) {
