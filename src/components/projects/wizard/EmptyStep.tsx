@@ -1,22 +1,38 @@
 // src/components/projects/wizard/EmptyStep.tsx
 
-import { Form, Input, Button, Typography } from 'antd'
+import { useState } from 'react';
+import { Form, Input, Button, Typography, message } from 'antd';
+import { api } from '@/utils/apiClient';
 
-const { Title } = Typography
+const { Title } = Typography;
 
 interface EmptyStepProps {
-  onBack: () => void
-  onFinish: () => void
+  selectedBlueprintId?: string;
+  onBack: () => void;
+  onFinish: () => void;
 }
 
-export function EmptyStep({ onBack, onFinish }: EmptyStepProps) {
-  const [form] = Form.useForm<{ name: string; label: string }>()
+export function EmptyStep({ selectedBlueprintId, onBack, onFinish }: EmptyStepProps) {
+  const [form] = Form.useForm<{ name: string; label: string }>();
+  const [loading, setLoading] = useState(false);
 
-  const handleCreate = (values: { name: string; label: string }) => {
-    // TODO: call API to create empty project
-    console.log('Create empty project', values)
-    onFinish()
-  }
+  const handleCreate = async (values: { name: string; label: string }) => {
+    setLoading(true);
+    try {
+      await api.post('/projects', {
+        id: values.name.trim(),
+        label: values.label.trim(),
+        defaultLocale: 'en',
+        ...(selectedBlueprintId && { blueprintId: selectedBlueprintId }),
+      });
+      message.success('Project created');
+      onFinish();
+    } catch (err: any) {
+      message.error(err.response?.data?.error ?? err.message ?? 'Failed to create project');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -38,7 +54,7 @@ export function EmptyStep({ onBack, onFinish }: EmptyStepProps) {
         </Form.Item>
         <Form.Item>
           <Button onClick={onBack} style={{ marginRight: 8 }}>Back</Button>
-          <Button type="primary" htmlType="submit">Create</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>Create</Button>
         </Form.Item>
       </Form>
     </>

@@ -27,11 +27,17 @@ export function CreateProjectWizard({
   'data-testid': testId,
 }: CreateProjectWizardProps) {
   const [current, setCurrent] = useState(0);
+  const [selectedBlueprintId, setSelectedBlueprintId] = useState<string | undefined>(undefined);
 
   const steps: WizardStep[] = [
     {
       title: 'Blueprint',
-      content: <BlueprintStep onNext={() => setCurrent(1)} />,
+      content: (
+        <BlueprintStep
+          onSelect={(id) => setSelectedBlueprintId(id)}
+          onNext={() => setCurrent(1)}
+        />
+      ),
     },
     {
       title: 'Edit content',
@@ -39,7 +45,13 @@ export function CreateProjectWizard({
     },
     {
       title: 'Validate',
-      content: <EmptyStep onBack={() => setCurrent(1)} onFinish={onClose} />,
+      content: (
+        <EmptyStep
+          selectedBlueprintId={selectedBlueprintId}
+          onBack={() => setCurrent(1)}
+          onFinish={onClose}
+        />
+      ),
     },
   ];
 
