@@ -11,6 +11,8 @@ import { EntryEditorPage } from '@/pages/EntryEditorPage'
 import { PageNotFoundPage } from '@/pages/PageNotFoundPage'
 import { ForbiddenPage } from '@/pages/ForbiddenPage'
 import { ComingSoonPage } from '@/pages/ComingSoonPage'
+import { BlueprintsListPage } from '@/pages/BlueprintsListPage'
+import { BlueprintEditorPage } from '@/pages/BlueprintEditorPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { AuthProvider } from '@/providers/AuthProvider'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
@@ -100,22 +102,19 @@ export default function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/projects/:projectId/system/blueprints" element={
+          <Route path="/blueprints" element={
             <ProtectedRoute>
-              <ProjectProvider>
-                <SetProjectFromRoute>
-                  <ComingSoonPage title="Blueprints" description="Blueprint management will be available in a future release." />
-                </SetProjectFromRoute>
-              </ProjectProvider>
+              <BlueprintsListPage />
             </ProtectedRoute>
           } />
-          <Route path="/projects/:projectId/system/blueprints/:blueprintId" element={
+          <Route path="/blueprints/new" element={
             <ProtectedRoute>
-              <ProjectProvider>
-                <SetProjectFromRoute>
-                  <ComingSoonPage title="Blueprint Editor" description="Blueprint editor will be available in a future release." />
-                </SetProjectFromRoute>
-              </ProjectProvider>
+              <BlueprintEditorPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/blueprints/:blueprintId" element={
+            <ProtectedRoute>
+              <BlueprintEditorPage />
             </ProtectedRoute>
           } />
 
