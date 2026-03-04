@@ -1,20 +1,7 @@
 // src/hooks/useModels.ts
 import { useEffect, useState } from 'react';
 import { api } from '@/utils/apiClient';
-
-interface ModelField {
-  name: string;
-  type: string;
-  label: string;
-  required?: boolean;
-  defaultValue?: any;
-}
-
-export interface ModelSchema {
-  id: string;
-  label: string;
-  fields: Record<string, ModelField> | ModelField[];
-}
+import type { ModelSchema } from '@/types/Model';
 
 export function useModels(projectId: string) {
   const [data, setData] = useState<ModelSchema[]>([]);

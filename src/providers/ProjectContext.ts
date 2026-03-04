@@ -1,15 +1,7 @@
 import { createContext } from 'react';
+import type { ProjectSchema } from '@/types/Project';
 
-// @todo use from @moteur/types
-export interface ProjectSchema {
-  id: string;
-  label: string;
-  description?: string;
-  defaultLocale: string;
-  supportedLocales?: string[];
-  users?: string[];
-  // You can extend this as needed
-}
+export type { ProjectSchema };
 
 interface ProjectContextType {
   projectId: string | null;

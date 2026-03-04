@@ -1,17 +1,12 @@
-// src/components/project/EntriesSection.tsx
-import { type KeyboardEvent } from 'react'
-import { Skeleton, Alert, Empty, List, Typography } from 'antd'
-import styles from './EntriesSection.module.css'
+import { type KeyboardEvent } from 'react';
+import { Skeleton, Alert, Empty, List, Typography } from 'antd';
+import type { Entry } from '@/types/Project';
+import styles from './EntriesSection.module.css';
 
-const { Title } = Typography
-
-export interface Entry {
-  id: string
-  title: string
-}
+const { Title } = Typography;
 
 export interface EntriesSectionProps {
-  entries: Entry[]
+  entries: Entry[];
   loading: boolean
   error?: string
   onSelectEntry: (id: string) => void

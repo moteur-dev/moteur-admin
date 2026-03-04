@@ -14,7 +14,6 @@ export function useProject(projectId: string) {
     setLoading(true);
     api.get<{ project: ProjectSchema }>(`/projects/${projectId}`)
       .then(res => {
-         console.log('[useProject] project response:', res.data);
         setData(res.data.project);
         setError(null);
       })

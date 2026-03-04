@@ -1,12 +1,8 @@
 // src/providers/ModelProvider.tsx
 import { createContext } from 'react';
+import type { ModelSchema } from '@/types/Model';
 
-export interface ModelSchema {
-  id: string;
-  label: string;
-  fields: any;
-  description?: string;
-}
+export type { ModelSchema };
 
 interface ModelContextType {
   modelId: string | null;

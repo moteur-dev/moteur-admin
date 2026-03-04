@@ -9,11 +9,14 @@ import { ModelEditorPage } from '@/pages/ModelEditorPage'
 import { EntriesListPage } from '@/pages/EntriesListPage'
 import { EntryEditorPage } from '@/pages/EntryEditorPage'
 import { PageNotFoundPage } from '@/pages/PageNotFoundPage'
+import { ForbiddenPage } from '@/pages/ForbiddenPage'
+import { ComingSoonPage } from '@/pages/ComingSoonPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { AuthProvider } from '@/providers/AuthProvider'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { ProjectProvider } from '@/providers/ProjectProvider'
 import { ModelProvider } from './providers/ModelProvider'
+import { SetProjectFromRoute } from '@/components/SetProjectFromRoute'
 
 export default function App() {
   return (
@@ -27,6 +30,10 @@ export default function App() {
 
           <Route path="/login" element={
             <LoginPage />
+            } />
+
+          <Route path="/forbidden" element={
+            <ForbiddenPage />
             } />
 
           <Route path="/projects" element={
@@ -95,18 +102,30 @@ export default function App() {
 
           <Route path="/projects/:projectId/system/blueprints" element={
             <ProtectedRoute>
-              <div>Blueprints Page</div>
+              <ProjectProvider>
+                <SetProjectFromRoute>
+                  <ComingSoonPage title="Blueprints" description="Blueprint management will be available in a future release." />
+                </SetProjectFromRoute>
+              </ProjectProvider>
             </ProtectedRoute>
           } />
           <Route path="/projects/:projectId/system/blueprints/:blueprintId" element={
             <ProtectedRoute>
-              <div>Blueprint Editor</div>
+              <ProjectProvider>
+                <SetProjectFromRoute>
+                  <ComingSoonPage title="Blueprint Editor" description="Blueprint editor will be available in a future release." />
+                </SetProjectFromRoute>
+              </ProjectProvider>
             </ProtectedRoute>
           } />
 
           <Route path="/projects/:projectId/system/users" element={
             <ProtectedRoute>
-              <div>User Management Page</div>
+              <ProjectProvider>
+                <SetProjectFromRoute>
+                  <ComingSoonPage title="User Management" description="User management for this project will be available in a future release." />
+                </SetProjectFromRoute>
+              </ProjectProvider>
             </ProtectedRoute>
           } />
 
