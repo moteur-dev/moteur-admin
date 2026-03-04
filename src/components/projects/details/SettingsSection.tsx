@@ -71,7 +71,7 @@ export function SettingsSection({
             <List.Item><Link to="/settings/customization/blocks">Blocks Library</Link></List.Item>
             <List.Item><Link to="/settings/customization/models">Models</Link></List.Item>
             <List.Item><Link to="/settings/customization/templates">Templates</Link></List.Item>
-            <List.Item><Link to="/settings/customization/blueprints">Blueprints Manager</Link></List.Item>
+            <List.Item><Link to="/blueprints">Blueprints Manager</Link></List.Item>
           </List>
         </Col>
       </Row>

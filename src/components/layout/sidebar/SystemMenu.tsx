@@ -52,9 +52,9 @@ export function SystemMenu() {
           label: <Link to={`${base}/customization/templates`}>Templates</Link>,
         },
         {
-          key: `${base}/customization/blueprints`,
+          key: '/blueprints',
           icon: <FiLayers />,
-          label: <Link to={`${base}/customization/blueprints`}>Blueprints Manager</Link>,
+          label: <Link to="/blueprints">Blueprints Manager</Link>,
         },
       ],
     },
