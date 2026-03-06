@@ -1,6 +1,6 @@
 // src/pages/ProjectsListPage.tsx
 import { useState, useMemo } from 'react';
-import { Avatar, Row, Col, Skeleton, Empty, Alert, Typography, Button } from 'antd';
+import { Avatar, Row, Col, Skeleton, Empty, Alert, Typography, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut, FiPlus } from 'react-icons/fi';
 import type { ProjectSchema } from '@/types/Project';
@@ -34,6 +34,10 @@ export function ProjectsListPage() {
   const handleSelect = (id: string) => navigate(`/projects/${id}`)
   const openWizard = () => setWizardVisible(true)
   const closeWizard = () => setWizardVisible(false)
+  const handleProjectCreated = () => {
+    message.success('Project created. You have been added as a member.');
+    refetch();
+  }
 
   return (
     <div className={styles.container}>
@@ -98,7 +102,7 @@ export function ProjectsListPage() {
       <CreateProjectWizard
         visible={wizardVisible}
         onClose={closeWizard}
-        onCreated={refetch}
+        onCreated={handleProjectCreated}
       />
     </div>
   )

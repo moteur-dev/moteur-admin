@@ -69,7 +69,6 @@ export function CreateProjectWizard({
         ...(selectedBlueprintId && selectedBlueprintId !== '' && { blueprintId: selectedBlueprintId }),
       };
       await api.post('/projects', body);
-      message.success('Project created. You have been added as a member.');
       onClose();
       onCreated?.();
     } catch (err: any) {
