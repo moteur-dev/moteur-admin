@@ -1,29 +1,49 @@
-import { useNavigate } from 'react-router-dom';
-import { Button, Table, Spin, Alert, Empty, Space, Typography, Modal, message } from 'antd';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Button, Table, Spin, Alert, Empty, Space, Typography, Modal, message, Tabs } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { useBlueprints } from '@/hooks/useBlueprints';
 import { MoteurPageLayout } from '@/components/layout/MoteurPageLayout';
 import { api } from '@/utils/apiClient';
-import type { BlueprintSchema } from '@/hooks/useBlueprints';
+import type { BlueprintSchema, BlueprintKind } from '@/hooks/useBlueprints';
+
+const KINDS: { key: BlueprintKind; label: string }[] = [
+  { key: 'project', label: 'Projects' },
+  { key: 'model', label: 'Models' },
+  { key: 'structure', label: 'Structures' },
+];
+
+function kindFromParam(k: string | null): BlueprintKind {
+  if (k === 'model' || k === 'structure') return k;
+  return 'project';
+}
 
 export function BlueprintsListPage() {
   const navigate = useNavigate();
-  const { data: blueprints, loading, error, refetch } = useBlueprints();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const kind = kindFromParam(searchParams.get('kind'));
+  const { data: blueprints, loading, error, refetch } = useBlueprints(kind);
 
-  const handleCreate = () => navigate('/blueprints/new');
-  const handleEdit = (id: string) => navigate(`/blueprints/${id}`);
+  const setKind = (k: BlueprintKind) => setSearchParams(k === 'project' ? {} : { kind: k });
+
+  const handleCreate = () => navigate(`/blueprints/new?kind=${kind}`);
+  const handleEdit = (id: string, recordKind?: BlueprintKind) =>
+    navigate(`/blueprints/${id}?kind=${recordKind ?? kind}`);
+
+  const pathForKind = (k: BlueprintKind) =>
+    k === 'project' ? '/blueprints/projects' : k === 'model' ? '/blueprints/models' : '/blueprints/structures';
 
   const handleDelete = (bp: BlueprintSchema) => {
+    const bpKind = bp.kind ?? kind;
     Modal.confirm({
       title: 'Delete blueprint?',
-      content: `"${bp.name}" will be removed. Projects created from it are not affected.`,
+      content: `"${bp.name}" will be removed.${bpKind === 'project' ? ' Projects created from it are not affected.' : ''}`,
       okText: 'Delete',
       okType: 'danger',
       cancelText: 'Cancel',
       onOk: async () => {
         try {
-          await api.delete(`/blueprints/${encodeURIComponent(bp.id)}`);
+          await api.delete(`${pathForKind(bpKind)}/${encodeURIComponent(bp.id)}`);
           message.success('Blueprint deleted');
           refetch();
         } catch (err: any) {
@@ -39,6 +59,12 @@ export function BlueprintsListPage() {
       dataIndex: 'id',
       key: 'id',
       render: (id: string) => <Typography.Text code>{id}</Typography.Text>,
+    },
+    {
+      title: 'Kind',
+      dataIndex: 'kind',
+      key: 'kind',
+      render: (k: BlueprintKind) => KINDS.find((x) => x.key === k)?.label ?? k,
     },
     {
       title: 'Name',
@@ -62,7 +88,7 @@ export function BlueprintsListPage() {
             type="link"
             size="small"
             icon={<EditOutlined />}
-            onClick={() => handleEdit(record.id)}
+            onClick={() => handleEdit(record.id, record.kind)}
           >
             Edit
           </Button>
@@ -89,6 +115,12 @@ export function BlueprintsListPage() {
         </Button>
       }
     >
+      <Tabs
+        activeKey={kind}
+        onChange={(k) => setKind(k as BlueprintKind)}
+        items={KINDS.map(({ key, label }) => ({ key, label }))}
+        style={{ marginBottom: 16 }}
+      />
       {loading && <Spin />}
       {error && (
         <Alert

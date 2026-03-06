@@ -1,6 +1,6 @@
 // src/components/project/SettingsSection.tsx
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Row, Col, Card, Skeleton, Alert, Typography, Button, Form, Input, List } from 'antd'
 import styles from './SettingsSection.module.css'
 
@@ -19,8 +19,10 @@ export function SettingsSection({
   error,
   onSave,
 }: SettingsSectionProps) {
+  const { projectId } = useParams<{ projectId: string }>()
   const [editing, setEditing] = useState(false)
   const [form] = Form.useForm<{ json: string }>()
+  const base = projectId ? `/projects/${projectId}` : ''
 
   // Initialize the form when entering edit mode
   const startEdit = () => {
@@ -57,20 +59,20 @@ export function SettingsSection({
         <Col xs={{ span: 5, offset: 1 }} lg={{ span: 10, offset: 2 }}>
           <Title level={5}>Configuration</Title>
           <List>
-            <List.Item><Link to="/settings/configuration/billing">Billing &amp; Plan</Link></List.Item>
-            <List.Item><Link to="/settings/configuration/permissions">Users &amp; Permissions</Link></List.Item>
-            <List.Item><Link to="/settings/configuration/features">Features list</Link></List.Item>
-            <List.Item><Link to="/settings/configuration/plugins">Plugins</Link></List.Item>
+            <List.Item><Link to={`${base}/configuration/billing`}>Billing &amp; Plan</Link></List.Item>
+            <List.Item><Link to={`${base}/configuration/permissions`}>Users &amp; Permissions</Link></List.Item>
+            <List.Item><Link to={`${base}/configuration/features`}>Features list</Link></List.Item>
+            <List.Item><Link to={`${base}/configuration/plugins`}>Plugins</Link></List.Item>
           </List>
         </Col>
 
         <Col xs={{ span: 5, offset: 1 }} lg={{ span: 10, offset: 2 }}>
           <Title level={5}>Customization</Title>
           <List>
-            <List.Item><Link to="/settings/customization/fields">Custom Fields</Link></List.Item>
-            <List.Item><Link to="/settings/customization/blocks">Blocks Library</Link></List.Item>
-            <List.Item><Link to="/settings/customization/models">Models</Link></List.Item>
-            <List.Item><Link to="/settings/customization/templates">Templates</Link></List.Item>
+            <List.Item><Link to={`${base}/customization/fields`}>Custom Fields</Link></List.Item>
+            <List.Item><Link to={`${base}/customization/blocks`}>Blocks Library</Link></List.Item>
+            <List.Item><Link to={`${base}/customization/models`}>Models</Link></List.Item>
+            <List.Item><Link to={`${base}/customization/templates`}>Templates</Link></List.Item>
             <List.Item><Link to="/blueprints">Blueprints Manager</Link></List.Item>
           </List>
         </Col>

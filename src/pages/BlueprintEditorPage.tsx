@@ -1,24 +1,38 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Form, Input, Button, Spin, Alert, Typography, message } from 'antd';
 
 import { useBlueprint } from '@/hooks/useBlueprints';
 import { MoteurPageLayout } from '@/components/layout/MoteurPageLayout';
 import { api } from '@/utils/apiClient';
-import type { BlueprintSchema } from '@/hooks/useBlueprints';
+import type { BlueprintSchema, BlueprintKind } from '@/hooks/useBlueprints';
 
 const { TextArea } = Input;
 const { Text } = Typography;
 
+function kindFromParam(k: string | null): BlueprintKind {
+  if (k === 'model' || k === 'structure') return k;
+  return 'project';
+}
+
 export function BlueprintEditorPage() {
   const { blueprintId } = useParams<{ blueprintId: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const kind = kindFromParam(searchParams.get('kind'));
   const isNew = blueprintId === 'new';
 
-  const { data: blueprint, loading, error } = useBlueprint(isNew ? null : blueprintId!);
+  const { data: blueprint, loading, error } = useBlueprint(isNew ? null : blueprintId!, kind);
 
   const [form] = Form.useForm<{ id: string; name: string; description: string; templateJson: string }>();
   const [saving, setSaving] = useState(false);
+
+  const defaultTemplateJson =
+    kind === 'model'
+      ? '{\n  "model": {}\n}'
+      : kind === 'structure'
+        ? '{\n  "structure": {}\n}'
+        : '{\n  "models": [],\n  "layouts": [],\n  "structures": []\n}';
 
   useEffect(() => {
     if (blueprint) {
@@ -26,19 +40,17 @@ export function BlueprintEditorPage() {
         id: blueprint.id,
         name: blueprint.name,
         description: blueprint.description ?? '',
-        templateJson: blueprint.template
-          ? JSON.stringify(blueprint.template, null, 2)
-          : '{\n  "models": [],\n  "layouts": [],\n  "structures": []\n}',
+        templateJson: blueprint.template ? JSON.stringify(blueprint.template, null, 2) : defaultTemplateJson,
       });
     } else if (isNew) {
       form.setFieldsValue({
         id: '',
         name: '',
         description: '',
-        templateJson: '{\n  "models": [],\n  "layouts": [],\n  "structures": []\n}',
+        templateJson: defaultTemplateJson,
       });
     }
-  }, [blueprint, isNew, form]);
+  }, [blueprint, isNew, form, kind]);
 
   const handleSave = async () => {
     try {
@@ -58,13 +70,15 @@ export function BlueprintEditorPage() {
         template,
       };
 
+      const basePath =
+        kind === 'project' ? '/blueprints/projects' : kind === 'model' ? '/blueprints/models' : '/blueprints/structures';
       setSaving(true);
       if (isNew) {
-        await api.post('/blueprints', payload);
+        await api.post(basePath, { ...payload, kind });
         message.success('Blueprint created');
-        navigate('/blueprints');
+        navigate(`/blueprints?kind=${kind}`);
       } else {
-        await api.patch(`/blueprints/${encodeURIComponent(blueprintId!)}`, {
+        await api.patch(`${basePath}/${encodeURIComponent(blueprintId!)}`, {
           name: payload.name,
           description: payload.description,
           template: payload.template,
@@ -79,7 +93,7 @@ export function BlueprintEditorPage() {
     }
   };
 
-  const listPath = '/blueprints';
+  const listPath = `/blueprints${kind === 'project' ? '' : `?kind=${kind}`}`;
 
   if (!isNew && loading) {
     return (
@@ -129,12 +143,23 @@ export function BlueprintEditorPage() {
           label="Template (JSON)"
           extra={
             <Text type="secondary">
-              Optional. Models, layouts, and structures to apply when creating a project from this blueprint.
-              Leave as empty arrays if you only need metadata.
+              {kind === 'project' &&
+                'Optional. Models, layouts, and structures to apply when creating a project from this blueprint. Leave as empty arrays if you only need metadata.'}
+              {kind === 'model' && 'Single model schema under "model". Used when adding a model from this blueprint.'}
+              {kind === 'structure' && 'Single structure schema under "structure". Used when adding a structure from this blueprint.'}
             </Text>
           }
         >
-          <TextArea rows={12} placeholder='{ "models": [], "layouts": [], "structures": [] }' />
+          <TextArea
+            rows={12}
+            placeholder={
+              kind === 'model'
+                ? '{ "model": { "id": "...", "label": "...", "fields": {} } }'
+                : kind === 'structure'
+                  ? '{ "structure": { ... } }'
+                  : '{ "models": [], "layouts": [], "structures": [] }'
+            }
+          />
         </Form.Item>
         <Form.Item>
           <Button type="primary" onClick={handleSave} loading={saving}>
