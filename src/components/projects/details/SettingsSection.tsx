@@ -71,7 +71,7 @@ export function SettingsSection({
           <List>
             <List.Item><Link to={`${base}/customization/fields`}>Custom Fields</Link></List.Item>
             <List.Item><Link to={`${base}/customization/blocks`}>Blocks Library</Link></List.Item>
-            <List.Item><Link to={`${base}/customization/models`}>Models</Link></List.Item>
+            <List.Item><Link to={`${base}/models`}>Models</Link></List.Item>
             <List.Item><Link to={`${base}/customization/templates`}>Templates</Link></List.Item>
             <List.Item><Link to="/blueprints">Blueprints Manager</Link></List.Item>
           </List>
@@ -84,7 +84,7 @@ export function SettingsSection({
           {Object.keys(settings).length === 0 ? (
             <Paragraph type="secondary">No settings defined.</Paragraph>
           ) : (
-            <pre className={styles.pre}>{JSON.stringify({"foo": "bar"}, null, 2)}</pre>
+            <pre className={styles.pre}>{JSON.stringify(settings, null, 2)}</pre>
           )}
           {onSave && (
             <Button type="primary" onClick={startEdit}>

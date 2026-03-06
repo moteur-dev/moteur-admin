@@ -3,6 +3,64 @@
   margin-bottom: 24px;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sectionHeader .ant-typography {
+  margin-bottom: 0;
+}
+
+.itemContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.itemMain {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.relativeTime {
+  font-size: 0.8rem;
+}
+
+.statusWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.statusDot[data-status='published'] {
+  background: var(--ant-color-success);
+}
+
+.statusDot[data-status='in_review'] {
+  background: var(--ant-color-processing);
+}
+
+.statusDot[data-status='draft'],
+.statusDot[data-status='unpublished'] {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.statusTag {
+  margin: 0;
+}
+
 .item {
   cursor: pointer;
 }

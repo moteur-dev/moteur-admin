@@ -1,6 +1,7 @@
 // src/components/project/UsersSection.tsx
 
-import { Skeleton, Alert, Empty, List, Avatar, Typography, Badge } from 'antd'
+import { Skeleton, Alert, Empty, List, Avatar, Typography, Badge, Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 import styles from './UsersSection.module.css'
 import type { OnlineUser } from '@/hooks/useProjectPresence'
 
@@ -11,6 +12,7 @@ export interface UsersSectionProps {
   onlineUsers: OnlineUser[]
   loading: boolean
   error?: string
+  onAddUser?: () => void
 }
 
 export function UsersSection({
@@ -18,6 +20,7 @@ export function UsersSection({
   onlineUsers,
   loading,
   error,
+  onAddUser,
 }: UsersSectionProps) {
   if (loading) {
     return (
@@ -52,7 +55,14 @@ export function UsersSection({
   if (authorizedUsers.length === 0) {
     return (
       <div className={styles.section}>
-        <Title level={4}>Users</Title>
+        <div className={styles.sectionHeader}>
+          <Title level={4}>Users</Title>
+          {onAddUser && (
+            <Button type="link" size="small" onClick={onAddUser} icon={<PlusOutlined />}>
+              Invite user
+            </Button>
+          )}
+        </div>
         <Empty description="No authorized users" />
       </div>
     )
@@ -62,7 +72,14 @@ export function UsersSection({
 
   return (
     <div className={styles.section}>
-      <Title level={4}>Users</Title>
+      <div className={styles.sectionHeader}>
+        <Title level={4}>Users</Title>
+        {onAddUser && (
+          <Button type="link" size="small" onClick={onAddUser} icon={<PlusOutlined />}>
+            Invite user
+          </Button>
+        )}
+      </div>
       <List
         itemLayout="horizontal"
         dataSource={authorizedUsers}
@@ -80,7 +97,17 @@ export function UsersSection({
                     <Avatar src={user.avatarUrl} icon={!user.avatarUrl && <Text>{user.name?.[0] ?? '?'}</Text>} />
                   </Badge>
                 }
-                title={user.name}
+                title={
+                  <span className={styles.userTitle}>
+                    {user.name}
+                    {user.roles?.[0] && (
+                      <Text type="secondary" className={styles.role}>
+                        {' '}
+                        {user.roles[0].toUpperCase()}
+                      </Text>
+                    )}
+                  </span>
+                }
                 description={
                   isOnline ? (
                     <Text type="success">Online now</Text>

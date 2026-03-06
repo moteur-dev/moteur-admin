@@ -31,6 +31,8 @@ export interface ProjectSchema {
     defaultLocale: string; // Default language for fallbacks
     supportedLocales?: string[]; // Other supported locales
 
+    isActive?: boolean;
+
     users?: string[]; // Optional list of authorized users
 
     storage?: string; // Storage adapter ID (e.g., 'core/local', 'core/s3')
@@ -43,6 +45,12 @@ export interface ProjectSchema {
     };
 
     namespaces?: string[]; // List of namespaces for this project
+
+    workflow?: {
+        enabled: boolean;
+        mode: 'auto_publish';
+        requireReview: boolean;
+    };
 
     meta?: {
         audit?: Audit;

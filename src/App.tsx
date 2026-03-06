@@ -13,6 +13,8 @@ import { ForbiddenPage } from '@/pages/ForbiddenPage'
 import { ComingSoonPage } from '@/pages/ComingSoonPage'
 import { BlueprintsListPage } from '@/pages/BlueprintsListPage'
 import { BlueprintEditorPage } from '@/pages/BlueprintEditorPage'
+import { LayoutsListPage } from '@/pages/LayoutsListPage'
+import { LayoutEditorPage } from '@/pages/LayoutEditorPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { AuthProvider } from '@/providers/AuthProvider'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
@@ -103,6 +105,25 @@ export default function App() {
                 <ModelProvider>
                   <EntryEditorPage />
                 </ModelProvider>
+              </ProjectProvider>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/projects/:projectId/layouts" element={
+            <ProtectedRoute>
+              <ProjectProvider>
+                <SetProjectFromRoute>
+                  <LayoutsListPage />
+                </SetProjectFromRoute>
+              </ProjectProvider>
+            </ProtectedRoute>
+          } />
+          <Route path="/projects/:projectId/layouts/:layoutId" element={
+            <ProtectedRoute>
+              <ProjectProvider>
+                <SetProjectFromRoute>
+                  <LayoutEditorPage />
+                </SetProjectFromRoute>
               </ProjectProvider>
             </ProtectedRoute>
           } />

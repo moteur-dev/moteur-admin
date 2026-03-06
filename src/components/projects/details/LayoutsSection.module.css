@@ -3,6 +3,17 @@
   margin-bottom: 24px;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sectionHeader .ant-typography {
+  margin-bottom: 0;
+}
+
 .item {
   cursor: pointer;
 }

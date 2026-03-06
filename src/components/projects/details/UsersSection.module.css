@@ -3,8 +3,30 @@
   margin-bottom: 24px;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sectionHeader .ant-typography {
+  margin-bottom: 0;
+}
+
 .item {
   padding: 8px 0;
+}
+
+.userTitle {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.role {
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 /* Ensure the badge shows up at the bottom-right of avatar */

@@ -1,0 +1,42 @@
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.card {
+  flex: 1;
+  min-width: 140px;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.metricLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.metricLink:hover {
+  color: inherit;
+}
+
+.icon {
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.needsAttention {
+  font-size: 0.85rem;
+  color: var(--ant-color-warning);
+}

@@ -1,7 +1,7 @@
 // src/components/layout/sidebar/MainMenu.tsx
 import { Menu } from 'antd';
 import { useLocation, Link } from 'react-router-dom';
-import { FiFileText, FiDatabase } from 'react-icons/fi';
+import { FiFileText, FiLayers, FiGrid, FiDatabase } from 'react-icons/fi';
 
 import { useCurrentProject } from '@/hooks/useCurrentProject';
 import { useModels } from '@/hooks/useModels';
@@ -13,13 +13,15 @@ export function MainMenu() {
 
   if (!projectId) return null;
 
+  const base = `/projects/${projectId}`;
+
   const modelSubItems =
     models?.length > 0
       ? models.map((model) => ({
-          key: `/projects/${projectId}/models/${model.id}`,
+          key: `${base}/models/${model.id}`,
           icon: null,
           label: (
-            <Link to={`/projects/${projectId}/models/${model.id}/entries`}>
+            <Link to={`${base}/models/${model.id}/entries`}>
               {model.label}
             </Link>
           ),
@@ -38,17 +40,60 @@ export function MainMenu() {
 
   const items = [
     {
-      key: `/projects/${projectId}/pages`,
+      key: 'pages-group',
       icon: <FiFileText />,
-      label: <Link to={`/projects/${projectId}/pages`}>Pages</Link>,
+      label: 'Pages & Templates',
+      children: [
+        {
+          key: `${base}/pages`,
+          icon: <FiFileText />,
+          label: <Link to={`${base}/pages`}>Pages</Link>,
+        },
+        {
+          key: `${base}/customization/templates`,
+          icon: <FiFileText />,
+          label: <Link to={`${base}/customization/templates`}>Templates</Link>,
+        },
+      ],
     },
     {
-      key: `/projects/${projectId}/models`,
+      key: 'layouts-group',
+      icon: <FiLayers />,
+      label: 'Layouts & Blocks',
+      children: [
+        {
+          key: `${base}/layouts`,
+          icon: <FiLayers />,
+          label: <Link to={`${base}/layouts`}>Layouts</Link>,
+        },
+        {
+          key: `${base}/customization/blocks`,
+          icon: <FiGrid />,
+          label: <Link to={`${base}/customization/blocks`}>Blocks</Link>,
+        },
+      ],
+    },
+    {
+      key: 'models-group',
       icon: <FiDatabase />,
-      label: <Link to={`/projects/${projectId}/models`}>Entries</Link>,
-      children: modelSubItems,
+      label: 'Models & Entries',
+      children: [
+        {
+          key: `${base}/models`,
+          icon: <FiDatabase />,
+          label: <Link to={`${base}/models`}>Models</Link>,
+        },
+        ...modelSubItems,
+      ],
     },
   ];
 
-  return <Menu mode="inline" selectedKeys={[pathname]} items={items} />;
+  return (
+    <Menu
+      mode="inline"
+      selectedKeys={[pathname]}
+      defaultOpenKeys={['pages-group', 'layouts-group', 'models-group']}
+      items={items}
+    />
+  );
 }

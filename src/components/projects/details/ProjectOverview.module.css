@@ -38,6 +38,18 @@
   margin-bottom: 16px;
 }
 
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.previewLink {
+  font-size: 0.9rem;
+}
+
 .meta {
   display: flex;
   flex-direction: column;
