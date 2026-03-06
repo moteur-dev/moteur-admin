@@ -11,14 +11,16 @@ export function Logo() {
     <div className={styles.logoContainer}>
       <Link to="/projects" aria-label="Moteur Admin Home">
         <img
-        src="/moteur-logo.svg"
-        alt="Moteur"
-        className={styles.logo}
-      />
+          src="/moteur-logo.svg"
+          alt="Moteur"
+          className={styles.logo}
+        />
       </Link>
-      <div className={styles.logoText}>
-        <Link to={`/projects/${projectId}`}><FiFolder /> {projectLabel} </Link>
-      </div>
+      {projectId && (
+        <div className={styles.logoText}>
+          <Link to={`/projects/${projectId}`}><FiFolder /> {projectLabel ?? projectId} </Link>
+        </div>
+      )}
     </div>
   )
 }

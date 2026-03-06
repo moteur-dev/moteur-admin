@@ -14,7 +14,7 @@ const { Title } = Typography;
 
 export function ProjectsListPage() {
   const navigate = useNavigate()
-  const { data, loading, error } = useProjects({
+  const { data, loading, error, refetch } = useProjects({
     retries: 2,
     retryDelayMs: 1000,
   })
@@ -90,6 +90,7 @@ export function ProjectsListPage() {
       <CreateProjectWizard
         visible={wizardVisible}
         onClose={closeWizard}
+        onCreated={refetch}
       />
     </div>
   )

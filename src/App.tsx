@@ -104,17 +104,23 @@ export default function App() {
 
           <Route path="/blueprints" element={
             <ProtectedRoute>
-              <BlueprintsListPage />
+              <ProjectProvider>
+                <BlueprintsListPage />
+              </ProjectProvider>
             </ProtectedRoute>
           } />
           <Route path="/blueprints/new" element={
             <ProtectedRoute>
-              <BlueprintEditorPage />
+              <ProjectProvider>
+                <BlueprintEditorPage />
+              </ProjectProvider>
             </ProtectedRoute>
           } />
           <Route path="/blueprints/:blueprintId" element={
             <ProtectedRoute>
-              <BlueprintEditorPage />
+              <ProjectProvider>
+                <BlueprintEditorPage />
+              </ProjectProvider>
             </ProtectedRoute>
           } />
 
@@ -131,7 +137,9 @@ export default function App() {
           {/* Redirect to project details if no specific page is found */}
           {/* 404 fallback */}
           <Route path="*" element={
-            <PageNotFoundPage />
+            <ProjectProvider>
+              <PageNotFoundPage />
+            </ProjectProvider>
           } />
         </Routes>
       </AuthProvider>

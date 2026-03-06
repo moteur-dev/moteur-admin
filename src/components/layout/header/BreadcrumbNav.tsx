@@ -19,7 +19,7 @@ interface Crumb {
 export function BreadcrumbNav() {
   const { pathname } = useLocation()
   const { projectId, projectLabel } = useCurrentProject()
-  const { data: model } = useModel(projectId!, pathname.split('/').pop() ?? '')
+  const { data: model } = useModel(projectId ?? '', pathname.split('/').pop() ?? '')
 
   const crumbs: Crumb[] = [
     { to: '/projects', label: 'Projects', icon: <FiHome /> },

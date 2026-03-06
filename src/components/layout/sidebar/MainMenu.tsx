@@ -11,6 +11,8 @@ export function MainMenu() {
   const { projectId } = useCurrentProject();
   const { data: models, loading: modelsLoading, error: modelsError } = useModels(projectId ?? '');
 
+  if (!projectId) return null;
+
   const modelSubItems =
     models?.length > 0
       ? models.map((model) => ({
