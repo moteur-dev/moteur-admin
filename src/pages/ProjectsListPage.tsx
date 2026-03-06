@@ -1,14 +1,14 @@
 // src/pages/ProjectsListPage.tsx
 import { useState, useMemo } from 'react';
-import { Avatar, Row, Col, Skeleton, Empty, Alert, Typography } from 'antd';
+import { Avatar, Row, Col, Skeleton, Empty, Alert, Typography, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { FiLogOut, FiPlus } from 'react-icons/fi';
 import type { ProjectSchema } from '@/types/Project';
 import { useProjects } from '@/hooks/useProjects';
 import { ProjectCard } from '@/components/projects/ProjectCard';
-import { NewProjectCard } from '@/components/projects/NewProjectCard';
 import { CreateProjectWizard } from '@/components/projects/CreateProjectWizard';
 import styles from './ProjectsListPage.module.css';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { useAuth } from '@/hooks/useAuth';
 
 const { Title } = Typography;
 
@@ -21,7 +21,7 @@ export function ProjectsListPage() {
   const [query] = useState('')
   
   const [wizardVisible, setWizardVisible] = useState(false)
-  const { user } = useCurrentUser();
+  const { user, logout } = useAuth();
 
   const filtered = useMemo<ProjectSchema[]>(() => {
     const q = query.trim().toLowerCase()
@@ -41,8 +41,15 @@ export function ProjectsListPage() {
       <div className={styles.content}>
         {user && (
           <div className={styles.greeting}>
-            <span>Welcome, {user.name || user.email}</span>
-            {user.avatar && <Avatar src={user.avatar} alt={user.name} size={'large'} shape='square' />}
+            <div className={styles.welcomeRow}>
+              <span className={styles.welcomeText}>
+                Welcome, {user.name?.trim() ? user.name : user.email}
+              </span>
+              {user.avatar && <Avatar src={user.avatar} alt={user.name ?? undefined} size="large" shape="square" />}
+            </div>
+            <Button type="default" icon={<FiLogOut />} onClick={logout} className={styles.logoutBtn} aria-label="Log out">
+              Log out
+            </Button>
           </div>
         )}
 
@@ -60,30 +67,31 @@ export function ProjectsListPage() {
         </Row>
       )}
       {!loading && (
-        <Row gutter={[16, 16]} justify="center">
-          <Col key="create">
-            <NewProjectCard
-              label="Create New Project"
-              onClick={openWizard}
-            />
-          </Col>
-          {filtered.length === 0 ? (
-            <Col xs={24}>
-              <Empty description="No projects found" />
-            </Col>
-          ) : (
-            filtered.map(p => (
-              <Col key={p.id} xs={24} sm={12} md={8} lg={6}>
-                <ProjectCard
-                  id={p.id}
-                  name={p.label}
-                  description={p.description ?? 'No description provided.'}
-                  onSelect={handleSelect}
-                />
+        <>
+          <div className={styles.createProjectRow}>
+            <Button type="primary" size="large" onClick={openWizard} icon={<FiPlus />} className={styles.createProjectButton}>
+              Create New Project
+            </Button>
+          </div>
+          <Row gutter={[16, 16]} justify="center" className={styles.projectsGrid}>
+            {filtered.length === 0 ? (
+              <Col xs={24}>
+                <Empty description="No projects found" />
               </Col>
-            ))
-          )}
-        </Row>
+            ) : (
+              filtered.map(p => (
+                <Col key={p.id} xs={24} sm={12} md={8} lg={6}>
+                  <ProjectCard
+                    id={p.id}
+                    name={p.label}
+                    description={p.description ?? 'No description provided.'}
+                    onSelect={handleSelect}
+                  />
+                </Col>
+              ))
+            )}
+          </Row>
+        </>
       )}
       </div>
 

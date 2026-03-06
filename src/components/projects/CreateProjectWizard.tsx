@@ -5,6 +5,7 @@ import { DetailsStep, type DetailsStepValues } from '@/components/projects/wizar
 import { SettingsStep, type SettingsStepValues } from '@/components/projects/wizard/SettingsStep';
 import { RecapStep } from '@/components/projects/wizard/RecapStep';
 import { api } from '@/utils/apiClient';
+import { useAuth } from '@/hooks/useAuth';
 
 const { Step } = Steps;
 
@@ -42,6 +43,7 @@ export function CreateProjectWizard({
   const [details, setDetails] = useState<DetailsStepValues | null>(null);
   const [settings, setSettings] = useState<Partial<SettingsStepValues>>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(false);
+  const { user: currentUser } = useAuth();
 
   const handleCreate = async () => {
     if (!details) return;
@@ -117,6 +119,8 @@ export function CreateProjectWizard({
         <RecapStep
           details={details}
           selectedBlueprintId={selectedBlueprintId}
+          settings={settings as SettingsStepValues}
+          currentUser={currentUser ?? undefined}
           onBack={() => setCurrent(2)}
           onCreate={handleCreate}
           loading={loading}
