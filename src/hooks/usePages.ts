@@ -9,6 +9,8 @@ export interface PageItem {
   id: string;
   title: string;
   isTemplate?: boolean;
+  status?: string;
+  updatedAt?: string;
 }
 
 // DEV-mode mock pages
@@ -46,10 +48,17 @@ export function usePages(projectId: string, options: UsePagesOptions = {}) {
 
     const doFetch = async (): Promise<void> => {
       try {
-        const res = await api.get<PageItem[] | { pages: PageItem[] }>(
-          `/api/moteur/projects/${encodeURIComponent(projectId)}/pages`
+        const res = await api.get<Array<{ id: string; label?: string; status?: string; updatedAt?: string }> | { pages: PageItem[] }>(
+          `/admin/projects/${encodeURIComponent(projectId)}/pages`
         );
-        const list = Array.isArray(res.data) ? res.data : (res.data as { pages: PageItem[] })?.pages ?? [];
+        const raw = Array.isArray(res.data) ? res.data : (res.data as { pages: PageItem[] })?.pages ?? [];
+        const list: PageItem[] = raw.map((p: { id: string; label?: string; title?: string; status?: string; updatedAt?: string }) => ({
+          id: p.id,
+          title: p.title ?? p.label ?? p.id,
+          status: p.status,
+          isTemplate: false,
+          updatedAt: p.updatedAt,
+        }));
         setData(list);
         setError(null);
         setLoading(false);
